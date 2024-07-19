@@ -1,23 +1,23 @@
 import React from "react";
-import PickMeals from "../Assets/pick-meals-image.png";
-import ChooseMeals from "../Assets/choose-image.png";
-import DeliveryMeals from "../Assets/delivery-image.png";
+import one from "../Assets/one.webp";
+import two from "../Assets/two.webp";
+import three from "../Assets/three.png";
 
 const Work = () => {
   const workInfoData = [
     {
-      image: PickMeals,
-      title: "Pick Meals",
+      image: one,
+      title: "Schedulte Your Adventure",
       text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et sagittis duis elementum interdum facilisi bibendum.",
     },
     {
-      image: ChooseMeals,
-      title: "Choose How Often",
+      image: two,
+      title: "We will send you invite",
       text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et ",
     },
     {
-      image: DeliveryMeals,
-      title: "Fast Deliveries",
+      image: three,
+      title: "Begin your adventure",
       text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et lorem ipsum",
     },
   ];
@@ -35,7 +35,7 @@ const Work = () => {
         {workInfoData.map((data) => (
           <div className="work-section-info" key={data.title}>
             <div className="info-boxes-img-container">
-              <img src={data.image} alt="" />
+              <img src={data.image} alt="" height={100} width={100}/>
             </div>
             <h2>{data.title}</h2>
             <p>{data.text}</p>

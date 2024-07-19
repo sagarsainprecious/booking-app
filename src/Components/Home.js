@@ -1,6 +1,6 @@
 import React from "react";
 import BannerBackground from "../Assets/home-banner-background.png";
-import BannerImage from "../Assets/home-banner-image.png";
+import horseImage from "../Assets/horseRide.png";
 import Navbar from "./Navbar";
 import { FiArrowRight } from "react-icons/fi";
 
@@ -14,18 +14,17 @@ const Home = () => {
         </div>
         <div className="home-text-section">
           <h1 className="primary-heading">
-            Your Favourite Food Delivered Hot & Fresh
+          Book Your Adventure Today
           </h1>
           <p className="primary-text">
-            Healthy switcher chefs do all the prep work, like peeding, chopping
-            & marinating, so you can cook a fresh food.
+          Whether you're a beginner or an experienced rider, we have the perfect ride for you. Start your journey with us today.
           </p>
-          <button className="secondary-button">
-            Order Now <FiArrowRight />{" "}
+          <button className="secondary-button" onClick={() => window.location.href="#booking"}>
+            Book Now <FiArrowRight />{" "}
           </button>
         </div>
         <div className="home-image-section">
-          <img src={BannerImage} alt="" />
+          <img src={horseImage} alt="" />
         </div>
       </div>
     </div>
