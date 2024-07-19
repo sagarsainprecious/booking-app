@@ -8,8 +8,6 @@ var calendarID = process.env.REACT_APP_CALENDAR_ID;
 var accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 
 
-
-
 const FormContainer = styled(Container)({
   height: '100vh',
   display: 'flex',
@@ -35,8 +33,6 @@ const EventForm = () => {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const [events, setEvents] = useState([]);
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -60,9 +56,6 @@ const EventForm = () => {
   };
 
 
-  const handleCloseSuccessModal = () => {
-    setShowSuccessModal(!showSuccessModal);
-  };
 
 
   //add Events
@@ -80,8 +73,14 @@ const EventForm = () => {
         })
         .then(
           (response) => {
-            return [true, response];
             handleCloseSuccessModal();
+            setFormData({
+              name: '',
+              email: '',
+              phone: '',
+              datetime: '',
+            })
+            return [true, response];
           },
           function (err) {
             console.log(err);
@@ -90,6 +89,12 @@ const EventForm = () => {
         );
     }
     gapi.load("client", initiate);
+  };
+
+
+
+  var handleCloseSuccessModal = () => {
+    setShowSuccessModal(!showSuccessModal);
   };
 
   const handleSubmit = (e) => {
@@ -130,19 +135,6 @@ const EventForm = () => {
       console.log('Form submitted:', formData);
       // Add logic to submit the form data to your backend or perform further actions
 
-      // function addOneHour(timeString) {
-      //   const dateTime = new Date(timeString);
-      //   dateTime.setHours(dateTime.getHours() + 1);
-
-      //   const year = dateTime.getFullYear();
-      //   const month = String(dateTime.getMonth() + 1).padStart(2, '0');
-      //   const day = String(dateTime.getDate()).padStart(2, '0');
-      //   const hour = String(dateTime.getHours()).padStart(2, '0');
-      //   const minute = String(dateTime.getMinutes()).padStart(2, '0');
-
-      //   return `${year}-${month}-${day}T${hour}:${minute}`;
-      // }
-
       function addOneHour(timeString) {
         const dateTime = new Date(timeString);
         dateTime.setHours(dateTime.getHours() + 1);
@@ -178,26 +170,6 @@ const EventForm = () => {
 
       // console.log(formData.datetime, newTime)
       console.log("startDateAndTime",startDateAndTime)
-
-      // var event = {
-      //   summary: "Booking - Horse Riding Booking App",
-      //   start: {
-      //     dateTime: startDateAndTime,
-      //     timeZone: "Asia/Kolkata",
-      //   },
-      //   end: {
-      //     dateTime: newTime,
-      //     timeZone: "Asia/Kolkata",
-      //   },
-      //   attendees: [{ email: formData.email }],
-      //   reminders: {
-      //     useDefault: false,
-      //     overrides: [
-      //       { method: "email", minutes: 24 * 60 },
-      //       { method: "popup", minutes: 10 },
-      //     ],
-      //   },
-      // };  
 
 
       var event = {

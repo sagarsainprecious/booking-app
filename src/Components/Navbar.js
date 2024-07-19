@@ -37,10 +37,12 @@ const Navbar = () => {
   return (
     <nav>
       <div className="nav-logo-container">
+        <a href="/" style={{ textDecoration:'none', color:'black'}}>
         <h2>Booking App</h2>
+        </a>
       </div>
       <div className="navbar-links-container">
-        <a href="">Home</a>
+        <a href="/">Home</a>
         <a href="#about">About</a>
         <a href="#testimonial">Testimonials</a>
         <a href="#contact">Contact</a>

@@ -51,7 +51,7 @@ const SuccessModal = ({ open, onClose }) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1">
-              We have sent an invite on your email.
+              We have sent a google calendar invite, please check your google calendar.
             </Typography>
           </Grid>
         </Grid>
