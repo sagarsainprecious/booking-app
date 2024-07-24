@@ -173,7 +173,7 @@ const EventForm = () => {
 
 
       var event = {
-        summary: `Booking Cofirmed of you adventure`,
+        summary: `Booking Cofirmed of your adventure`,
         location: '',
         description: `hi, ${formData.name}! your Horse ride booking has been confirmed by this BookingApp.com.`,
         start: {
