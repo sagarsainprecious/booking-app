@@ -3,9 +3,10 @@ import { Container, Typography, TextField, Button, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { gapi } from "gapi-script";
 import SuccessModal from './SuccessModal';
+import axios from 'axios';
+
 
 var calendarID = process.env.REACT_APP_CALENDAR_ID;
-var accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 
 
 const FormContainer = styled(Container)({
@@ -30,7 +31,7 @@ const SubmitButton = styled(Button)(({ theme }) => ({
 }));
 
 const EventForm = () => {
-
+  const [accessToken, setAccessToken] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -47,6 +48,43 @@ const EventForm = () => {
     datetime: false,
   });
 
+  const storedToken = localStorage.getItem('token');
+
+
+
+    // Function to refresh access token
+    const refreshAccessToken = async () => {
+      try {
+        const refresh_token = process.env.REACT_APP_REFRESH_TOKEN;
+        const client_id = process.env.REACT_APP_CLIENT_ID;
+        const client_secret = process.env.REACT_APP_CLIENT_SECRET;
+  
+        const response = await axios.post('https://oauth2.googleapis.com/token', {
+          refresh_token,
+          client_id,
+          client_secret,
+          grant_type: 'refresh_token'
+        });
+  
+        if (response.status === 200) {
+          const newAccessToken = response.data.access_token;
+          setAccessToken(newAccessToken);
+          localStorage.setItem('token', newAccessToken)
+          console.log('New Access Token:', newAccessToken);
+        } else {
+          console.error('Failed to refresh access token:', response.data.error);
+        }
+      } catch (error) {
+        console.error('Error refreshing access token:', error.message);
+      }
+    };
+
+    
+
+  if(!storedToken){
+    refreshAccessToken()
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -54,8 +92,6 @@ const EventForm = () => {
     // Reset validation error for the current field
     setFormErrors({ ...formErrors, [name]: false });
   };
-
-
 
 
   //add Events
@@ -68,7 +104,7 @@ const EventForm = () => {
           body: event,
           headers: {
             "Content-type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${storedToken}`,
           },
         })
         .then(
@@ -90,8 +126,6 @@ const EventForm = () => {
     }
     gapi.load("client", initiate);
   };
-
-
 
   var handleCloseSuccessModal = () => {
     setShowSuccessModal(!showSuccessModal);
@@ -148,7 +182,7 @@ const EventForm = () => {
 
         return `${year}-${month}-${day}T${hour}:${minute}:${second}+05:30`;
       }
-     
+
       const customFormatDate = (formData) => {
         const dateTime = new Date(formData);
         dateTime.setHours(dateTime.getHours());
@@ -159,21 +193,21 @@ const EventForm = () => {
         const hour = String(dateTime.getHours()).padStart(2, '0');
         const minute = String(dateTime.getMinutes()).padStart(2, '0');
         const second = String(dateTime.getSeconds()).padStart(2, '0');
-          
+
         return `${year}-${month}-${day}T${hour}:${minute}:${second}+05:30`;
       }
 
       const originalTime = formData.datetime;
       const newTime = addOneHour(originalTime);
 
-      let startDateAndTime =  customFormatDate(formData.datetime);
+      let startDateAndTime = customFormatDate(formData.datetime);
 
       // console.log(formData.datetime, newTime)
-      console.log("startDateAndTime",startDateAndTime)
+      console.log("startDateAndTime", startDateAndTime)
 
 
       var event = {
-        summary: `Booking Cofirmed of your adventure`,
+        summary: `Booking Cofirmed for your adventure`,
         location: '',
         description: `hi, ${formData.name}! your Horse ride booking has been confirmed by this BookingApp.com.`,
         start: {
@@ -186,7 +220,7 @@ const EventForm = () => {
         },
         attendees: [
           {
-            email:formData.email
+            email: formData.email
           }
         ],
         reminders: {
@@ -204,6 +238,12 @@ const EventForm = () => {
       console.log('Form has validation errors');
     }
   };
+
+
+  setInterval(() => {
+    refreshAccessToken()
+  }, 1800000)
+
 
   return (
     <FormContainer component="main" maxWidth="xl">
